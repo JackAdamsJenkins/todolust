@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application ToDo</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.5/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-base-200 min-h-screen py-6 flex flex-col justify-center sm:py-12">
+    <div class="relative py-3 sm:max-w-xl sm:mx-auto">
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <h1 id="todo-title" class="card-title text-3xl font-bold mb-6 text-center">Ma Liste de Tâches</h1>
+
+                <div class="form-control mb-6">
+                    <form action="#" method="post"  class="input-group">
+                        <input type="text" placeholder="Ajouter une nouvelle tâche" class="input input-bordered w-full" />
+                        <button class="btn btn-primary" id="add-task">Ajouter</button>
+                    </form>
+                </div>
+
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold mb-3">À faire</h2>
+                    <ul id="todo-list" class="space-y-2">
+                       
+                    </ul>
+                </div>
+
+                <div>
+                    <h2 class="text-xl font-semibold mb-3">Terminé</h2>
+                    <ul id="done-list" class="space-y-2">
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
