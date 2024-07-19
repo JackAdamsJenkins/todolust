@@ -101,17 +101,19 @@ function addTaskToDOM(task){
 }
 
 function listenCheckbox(){
-    const checkbox = document.querySelectorAll('input[type="checkbox"]');
-    for (const chk of checkbox) {
-        chk.addEventListener('change', async (e) => {
-            e.preventDefault();
-            const id = e.target.dataset.id;
-            const status = e.target.checked ? 'done' : 'todo';
-            const update = await updateTask(id, status);
-            if(update.success){
-                updateTaskToDOM(id, status);
-            }
-        })
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    for (const chk of checkboxes) {
+        chk.addEventListener('change', checkboxChangeHandler);
+    }
+}
+
+async function checkboxChangeHandler(e) {
+    e.preventDefault();
+    const id = e.target.dataset.id;
+    const status = e.target.checked ? 'done' : 'todo';
+    const update = await updateTask(id, status);
+    if(update.success){
+        updateTaskToDOM(id, status);
     }
 }
 
@@ -131,37 +133,34 @@ async function updateTask(id, status){
 }
 
 function updateTaskToDOM(id, status){
-    // sélectionner la tâche, je sélectionne la liste dans laquelle elle se trouve
-    const task = document.querySelector(`[data-id="${id}"]`);
-    if(status == 'done'){
-       // Je déplace la tâche dans la liste des tâches en cours
+    // Sélectionner la tâche
+    const task = document.querySelector(`li[data-id="${id}"]`);
+    const checkbox = task.querySelector('input[type="checkbox"]');
+    const span = task.querySelector('span');
+
+    if(status === 'done'){
+        // Déplacer la tâche dans la liste des tâches terminées
         const done = document.querySelector('#done-list');
-        // changer la classe de la tâche
-        done.insertAdjacentHTML('afterbegin', task.outerHTML);
-        // sélectionné la checkbox avec cet id
-        const checkbox = document.querySelector(`input[data-id="${id}"]`);
+        done.insertAdjacentElement('afterbegin', task);
+
+        // Mettre à jour les classes et l'état
+        checkbox.checked = true;
         checkbox.classList.remove('checkbox-primary');
         checkbox.classList.add('checkbox-success');
-        // select after the checkbox
-        checkbox.nextElementSibling.classList.add('line-through');
-        // Uncheck la checkbox
-        checkbox.checked = true;
-        console.log(checkbox);
-        task.remove();
+        span.classList.add('line-through');
     } else {
-        // Je déplace la tâche dans la liste des tâches à faire
+        // Déplacer la tâche dans la liste des tâches à faire
         const todo = document.querySelector('#todo-list');
-        // changer la classe de la tâche
-        todo.insertAdjacentHTML('afterbegin', task.outerHTML);
+        todo.insertAdjacentElement('afterbegin', task);
 
-                // sélectionné la checkbox avec cet id
-                const checkbox = document.querySelector(`input[data-id="${id}"]`);
-                checkbox.classList.remove('checkbox-success');
-                checkbox.classList.add('checkbox-primary');
-        checkbox.nextElementSibling.classList.remove('line-through');
-
-                // Uncheck la checkbox
-                checkbox.checked = false;
-        task.remove();
+        // Mettre à jour les classes et l'état
+        checkbox.checked = false;
+        checkbox.classList.remove('checkbox-success');
+        checkbox.classList.add('checkbox-primary');
+        span.classList.remove('line-through');
     }
+
+    // Réattacher l'écouteur d'événements à la case à cocher
+    checkbox.removeEventListener('change', checkboxChangeHandler);
+    checkbox.addEventListener('change', checkboxChangeHandler);
 }
