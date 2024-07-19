@@ -45,7 +45,11 @@ function populateTasks(datas){
         done.insertAdjacentHTML('afterbegin', gabarit);
     }
 }
-
+/**
+ * Récupère les données envoyée sur tasks et qui peuple le DOM
+ * @param {Array<Task>} tasks les données de l'input
+ * @returns {void}
+ */
 async function listenButton(){
     const button = document.querySelector('#add-task');
     button.addEventListener('click', async (e) => {
@@ -75,7 +79,11 @@ async function listenButton(){
         }
     })
 }
-
+/** 
+ * Ajoute une tâche à la BDD
+ * @param {string} task le contenu du champ de saisie
+ * @returns {Promise<Task>} la tâche
+ */
 async function addTask(task){
     try {
         const req = await fetch('http://localhost/dwwm2024/todo/addtask.php', {
@@ -90,7 +98,11 @@ async function addTask(task){
         console.error(err);
     }
 }
-
+/** 
+ * Ajoute une tâche au DOM
+ * @param {Task} task la tâche
+ * @returns {void}
+ */
 function addTaskToDOM(task){
     const todo = document.querySelector('#todo-list');
     const gabarit = `<li data-id="${task.id}" class="flex items-center space-x-2">
@@ -100,6 +112,10 @@ function addTaskToDOM(task){
     todo.insertAdjacentHTML('afterbegin', gabarit);
 }
 
+/**
+ * Récupère les checkbox et les attache à la fonction checkboxChangeHandler
+ * @returns {void}
+ */
 function listenCheckbox(){
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
     for (const chk of checkboxes) {
@@ -107,6 +123,11 @@ function listenCheckbox(){
     }
 }
 
+/**
+ * Récupère les checkbox et les attache à la fonction checkboxChangeHandler
+ * @param {Event} e l'événement
+ * @returns {void}
+ */
 async function checkboxChangeHandler(e) {
     e.preventDefault();
     const id = e.target.dataset.id;
@@ -116,7 +137,12 @@ async function checkboxChangeHandler(e) {
         updateTaskToDOM(id, status);
     }
 }
-
+/**
+ * Met à jour la tâche
+ * @param {string} id l'id de la tâche
+ * @param {string} status le statut de la tâche
+ * @returns {Promise<Task>} la tâche
+ */
 async function updateTask(id, status){
     try {
         const req = await fetch('http://localhost/dwwm2024/todo/addtask.php', {
@@ -131,7 +157,12 @@ async function updateTask(id, status){
         console.error(err);
     }
 }
-
+/** 
+ * Met à jour la tâche dans le DOM
+ * @param {string} id l'id de la tâche
+ * @param {string} status le statut de la tâche
+ * @returns {void}
+ */
 function updateTaskToDOM(id, status){
     // Sélectionner la tâche
     const task = document.querySelector(`li[data-id="${id}"]`);
